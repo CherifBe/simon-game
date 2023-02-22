@@ -1,0 +1,36 @@
+.container{
+    width: 100%;
+}
+
+#red,#blue,#green,#yellow{
+    width: 300px;
+    height: 300px;
+}
+
+.no-display{
+    pointer-events: none;
+}
+
+.hidden{
+    display: none;
+}
+.activated{
+    display:none !important;
+}
+
+#red{
+    background-color: red;
+}
+
+#blue{
+    background-color: blue;
+}
+
+#green{
+    background-color: green;
+}
+
+#yellow{
+    background-color: yellow;
+}
+
