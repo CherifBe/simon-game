@@ -3,6 +3,7 @@ class Display{
     constructor(){
         this.tiles = ['red', 'blue', 'green', 'yellow'];
         this.level = 0;
+        this.game = new Game(this.tiles);
         this.initDisplay();
     }
 
@@ -16,7 +17,8 @@ class Display{
                 let res = this.game.handleClick(tile);
                 if(res === 'res'){
                     setTimeout(() => {
-                        this.play(this.game.nextLevel());
+                        // this.play(this.game.nextLevel());
+                        this.play();
                     }, 1000);
                 }
                 if(res === true){ // Si renvoie 'true' la partie en cours est terminé
@@ -29,7 +31,6 @@ class Display{
     }
 
     startGame(){
-        this.game = new Game(this.tiles, this.displayInfo);
         this.startButton.classList.add('hidden');
         this.displayInfo.classList.remove('hidden');
         this.displayInfo.textContent = 'Le jeu commence...';
@@ -37,19 +38,31 @@ class Display{
         this.container.classList.add('no-display');
         
         this.level++;
-        this.play(this.game.nextLevel());
+        //this.play(this.game.nextLevel());
+        this.play();
         setTimeout(() => {
             this.timeToPlay();
         }, this.level * 600 + 1000);
     }
 
-    play(newSequence){
+    /*play(newSequence){
         console.log(newSequence);
         newSequence.forEach((color, index) => { 
             setTimeout(() => {
                 this.activateTile(color);
         }, (index+1) * 600);
     });
+    } */
+
+    play(){
+        if(!this.container.classList.contains('no-display')){
+            this.container.classList.add('no-display');
+        }
+        this.game.generateNewSequence().forEach((color, index) => {
+            setTimeout(() => {
+                this.activateTile(color);
+        }, (index+1) * 600);
+        });
     }
 
     activateTile(color){
@@ -59,6 +72,7 @@ class Display{
         setTimeout(() => {
             tileElement.classList.remove('activated');
         }, 400);
+        this.timeToPlay();
     }
 
     timeToPlay(){

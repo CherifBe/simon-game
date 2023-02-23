@@ -3,6 +3,7 @@ class Game{
         this.tiles = tiles;
         this.sequence = [];
         this.humanSequence = [];
+        this.i = 0;
     }
 
     handleClick(tile){
@@ -29,7 +30,7 @@ class Game{
         return this.tiles[Math.floor(Math.random() * 4)];
     }
 
-    nextLevel(){
+    nextLevel(){ // On n'utilise plus cette fonction dans la version aléatoire
         this.newSequence = this.sequence;
         this.newSequence.push(this.nextTile());
         this.sequence = this.newSequence;
@@ -40,5 +41,15 @@ class Game{
         this.sequence = [];
         this.humanSequence = [];
         this.level = 0;
+    }
+
+    generateNewSequence(){
+        this.i++;
+        this.newSequence = [];
+        for(let j = 0; j < this.i; j++){
+            this.newSequence.push(this.nextTile());
+        }
+        this.sequence = this.newSequence;
+        return this.newSequence;
     }
 }
