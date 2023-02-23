@@ -1,10 +1,31 @@
+body{
+    background-color: #FFFFFF;
+}
+
 .container{
-    width: 100%;
+    width:100%;
+    justify-content: center;
+    display:flex;
+}
+
+.tile{
+    margin:20px;
 }
 
 #red,#blue,#green,#yellow{
     width: 300px;
     height: 300px;
+    border-radius: 10px;
+    text-decoration: none;
+    border-bottom: 5px solid;
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+}
+
+#red:active,#blue:active,#green:active,#yellow:active{
+    transform: translate(0px, 5px);
+    -webkit-transform: translate(0px, 5px);
+    border-bottom: 1px solid;
 }
 
 .no-display{
@@ -15,7 +36,7 @@
     display: none;
 }
 .activated{
-    display:none !important;
+    opacity: 0.6;
 }
 
 #red{
@@ -33,4 +54,6 @@
 #yellow{
     background-color: yellow;
 }
+
+
 

@@ -10,23 +10,21 @@ class Game{
 
         if(this.humanSequence[index] !== this.sequence[index]){
             this.resetGame();
-            return true;
+            return 'Vous avez perdu...';
         }
 
         if(this.humanSequence.length === this.sequence.length){
             if(this.humanSequence.length === 5){
                 this.resetGame();
-                return true;
+                return 'Vous avez gagné!!!';
             }
             this.humanSequence = [];
-            //this.displayInfo.textContent = 'C\'est gagné!';
             setTimeout(() => {
                 this.nextLevel();
             }, 1000);
-            return;
+            return '';
         }
-        const nbOfTaps = this.sequence.length - this.humanSequence.length;
-        //this.displayInfo.textContent = `Votre tour: ${nbOfTaps}`;
+        return this.sequence.length - this.humanSequence.length;
     }
 
     nextTile(){
@@ -37,25 +35,8 @@ class Game{
         const newSequence = [...this.sequence];
         newSequence.push(this.nextTile());
         this.play(newSequence);
-
         this.sequence = [...newSequence];
-    }
-
-    play(newSequence){
-        newSequence.forEach((color, index) => { 
-            setTimeout(() => {
-                this.activateTile(color);
-        }, (index+1) * 600);
-    });
-    }
-
-    activateTile(color){
-        console.log(color);
-        const tileElement = document.getElementById(color);
-        tileElement.classList.add('activated');
-        setTimeout(() => {
-            tileElement.classList.remove('activated');
-        }, 400);
+        return newSequence;
     }
 
     resetGame(){
