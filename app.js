@@ -1,1 +1,1 @@
-const game = new Game();
+const game = new Display();
