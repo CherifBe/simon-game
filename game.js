@@ -6,25 +6,23 @@ class Game{
     }
 
     handleClick(tile){
+        console.log(tile);
         const index = this.humanSequence.push(tile) - 1;
-
         if(this.humanSequence[index] !== this.sequence[index]){
             this.resetGame();
-            return 'Vous avez perdu...';
+            alert('Vous avez perdu...');
+            return true;
         }
 
         if(this.humanSequence.length === this.sequence.length){
             if(this.humanSequence.length === 5){
                 this.resetGame();
-                return 'Vous avez gagné!!!';
+                alert('Vous avez gagné!!!');
+                return true;
             }
             this.humanSequence = [];
-            setTimeout(() => {
-                this.nextLevel();
-            }, 1000);
-            return '';
+            return 'res';
         }
-        return this.sequence.length - this.humanSequence.length;
     }
 
     nextTile(){
@@ -32,11 +30,10 @@ class Game{
     }
 
     nextLevel(){
-        const newSequence = [...this.sequence];
-        newSequence.push(this.nextTile());
-        this.play(newSequence);
-        this.sequence = [...newSequence];
-        return newSequence;
+        this.newSequence = this.sequence;
+        this.newSequence.push(this.nextTile());
+        this.sequence = this.newSequence;
+        return this.newSequence;
     }
 
     resetGame(){

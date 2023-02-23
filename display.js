@@ -13,14 +13,16 @@ class Display{
 
         this.tiles.forEach(tile => {
             document.getElementById(tile).addEventListener('click', () => {
-                let msg = this.game.handleClick(tile);
-                if(typeof msg == 'number'){
-                    this.displayInfo.textContent = `Il vous reste ${msg} clicks`;
+                let res = this.game.handleClick(tile);
+                if(res === 'res'){
+                    setTimeout(() => {
+                        this.play(this.game.nextLevel());
+                    }, 1000);
                 }
-                if(msg != ''){ // Si renvoie un message, on affiche le message et la partie en cours est terminé
-                    this.displayInfo.textContent = msg;
+                if(res === true){ // Si renvoie 'true' la partie en cours est terminé
                     this.reset();
                 }
+
             });
         })
         this.startButton.addEventListener('click', this.startGame.bind(this));
@@ -42,6 +44,7 @@ class Display{
     }
 
     play(newSequence){
+        console.log(newSequence);
         newSequence.forEach((color, index) => { 
             setTimeout(() => {
                 this.activateTile(color);
