@@ -27,8 +27,9 @@ class Game{
         }
     }
 
-    nextTile(k = false, j){
+    nextTile(k = false, j = null){
         if(!k){
+            console.log('je suis là');
             return this.tiles[Math.floor(Math.random() * this.nbTiles)];
         }
         return this.tiles[j];
@@ -48,6 +49,7 @@ class Game{
     }
 
     generateNewSequence(i = 0){
+        console.log('je suis pas là');
         let k = true;
         if(i === 0){
             k = false;

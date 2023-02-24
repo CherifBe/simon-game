@@ -3,28 +3,30 @@ class Display{
     constructor(){
         this.tiles = ['red', 'blue', 'green', 'yellow', 'aqua', 'fuchsia', 'gray', 'lime', 'navy', 'olive', 'purple', 'silver'];
         this.userPreference();
-        // this.initDisplay();
         this.level = 0;
         this.nbTiles = 0;
         this.linear = true;
     }
 
-    initDisplay(){ // Lancer fonction lorsque l'on soumet le formulaire
+    initDisplay(){ // Cette fonction est lancée une fois que le formulaire est envoyé
+
+        document.getElementById('userPreference').classList.add('hidden');
         this.game = new Game(this.tiles, this.nbTiles);
 
         this.container = document.querySelector('.container');
         this.startButton = document.getElementById('startBtn');
+        this.startButton.classList.remove('hidden');
         this.displayInfo = document.getElementById('info');
 
-        const tilesToDisplay = this.game.generateNewSequence(this.nbTiles); // TODO: penser modulo (prendre moitié du tableau)
+        const tilesToDisplay = (this.linear) ? this.tiles.slice(0,this.nbTiles) : this.game.generateNewSequence(this.nbTiles);
         let j = 0;
         let k = 0;
-        let groupTiles = [];// TODO: optimiser ça
+        let groupTiles = [];
         groupTiles.push(document.createElement('div'));
         groupTiles[k].classList.add('grouptiles');
         tilesToDisplay.forEach(tile => {
             
-            if( j % 4 === 0 ){
+            if( j % ((this.nbTiles > 8) ? 4 : (this.nbTiles / 2) ) === 0 ){ // Si le joueur a selectionné un mode avec plus de 8 tuiles, on fait des lignes de 4.
                 k++;
                 groupTiles.push(document.createElement('div'));
                 groupTiles[k].classList.add('grouptiles'); 
@@ -42,8 +44,7 @@ class Display{
                 let res = this.game.handleClick(tile);
                 if(res === 'res'){
                     setTimeout(() => {
-                        // this.play(this.game.nextLevel());
-                        this.play();
+                        (this.linear) ? this.play(this.game.nextLevel()) : this.play();
                     }, 1000);
                 }
                 if(res === true){ // Si renvoie 'true' la partie en cours est terminé
@@ -56,26 +57,11 @@ class Display{
             this.container.appendChild(groupTiles[k]);
         });
 
-   /*     this.tiles.forEach(tile => {
-            document.getElementById(tile).addEventListener('click', () => {
-                let res = this.game.handleClick(tile);
-                if(res === 'res'){
-                    setTimeout(() => {
-                        // this.play(this.game.nextLevel());
-                        this.play();
-                    }, 1000);
-                }
-                if(res === true){ // Si renvoie 'true' la partie en cours est terminé
-                    this.reset();
-                }
-
-            });
-        }) */
         this.startButton.addEventListener('click', this.startGame.bind(this));
     }
 
     userPreference(){
-        document.getElementById('userPreference').addEventListener('submit', this.formTreatment)
+        document.getElementById('userPreference').addEventListener('submit', (e) => this.formTreatment(e));
     }
 
     formTreatment(e){
@@ -83,7 +69,6 @@ class Display{
 
         let nbTiles = document.getElementById('chooseNbTiles');
         let aleatoireMode = document.getElementById('aleatoire');
-        let linearMode = document.getElementById('lineaire');
         
         if(nbTiles.value <= 12){
             this.nbTiles = nbTiles.value;
@@ -102,27 +87,20 @@ class Display{
         this.container.classList.add('no-display');
         
         this.level++;
-        //this.play(this.game.nextLevel());
-        this.play();
+        (this.linear) ? this.play(this.game.nextLevel()) : this.play();
         setTimeout(() => {
             this.timeToPlay();
         }, this.level * 600 + 1000);
     }
 
-    /*play(newSequence){
-        console.log(newSequence);
-        newSequence.forEach((color, index) => { 
-            setTimeout(() => {
-                this.activateTile(color);
-        }, (index+1) * 600);
-    });
-    } */
-
-    play(){
+    play(sequence = null){
         if(!this.container.classList.contains('no-display')){
             this.container.classList.add('no-display');
         }
-        this.game.generateNewSequence().forEach((color, index) => {
+        if(sequence == null || !(this.linear)){
+            sequence = this.game.generateNewSequence();
+        }
+        sequence.forEach((color, index) => {
             setTimeout(() => {
                 this.activateTile(color);
         }, (index+1) * 600);
