@@ -2,17 +2,19 @@ class Display{
 
     constructor(){
         this.tiles = ['red', 'blue', 'green', 'yellow', 'aqua', 'fuchsia', 'gray', 'lime', 'navy', 'olive', 'purple', 'silver'];
+        this.userPreference();
+        // this.initDisplay();
         this.level = 0;
-        this.nbTiles = 10;
-        this.game = new Game(this.tiles, this.nbTiles);
-        this.initDisplay();
+        this.nbTiles = 0;
+        this.linear = true;
     }
 
     initDisplay(){ // Lancer fonction lorsque l'on soumet le formulaire
+        this.game = new Game(this.tiles, this.nbTiles);
+
         this.container = document.querySelector('.container');
         this.startButton = document.getElementById('startBtn');
         this.displayInfo = document.getElementById('info');
-
 
         const tilesToDisplay = this.game.generateNewSequence(this.nbTiles); // TODO: penser modulo (prendre moitié du tableau)
         let j = 0;
@@ -54,8 +56,6 @@ class Display{
             this.container.appendChild(groupTiles[k]);
         });
 
-
-
    /*     this.tiles.forEach(tile => {
             document.getElementById(tile).addEventListener('click', () => {
                 let res = this.game.handleClick(tile);
@@ -72,6 +72,26 @@ class Display{
             });
         }) */
         this.startButton.addEventListener('click', this.startGame.bind(this));
+    }
+
+    userPreference(){
+        document.getElementById('userPreference').addEventListener('submit', this.formTreatment)
+    }
+
+    formTreatment(e){
+        e.preventDefault();
+
+        let nbTiles = document.getElementById('chooseNbTiles');
+        let aleatoireMode = document.getElementById('aleatoire');
+        let linearMode = document.getElementById('lineaire');
+        
+        if(nbTiles.value <= 12){
+            this.nbTiles = nbTiles.value;
+        }
+        if(aleatoireMode.checked){
+            this.linear = false;
+        }
+        this.initDisplay();
     }
 
     startGame(){

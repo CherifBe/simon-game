@@ -39,7 +39,19 @@
     <button id="startBtn">Start</button>
 
 
-    
+    <form id="userPreference" method="GET">
+        <input type="text" name="chooseNbTiles" id="chooseNbTiles">
+        <label for="chooseNbTiles">Nombre de tuile</label>
+
+        <fieldset>
+            <legend>Selectionnez un mode:</legend>
+            <input type="radio" name="mode" id="aleatoire" value="aleatoire">
+            <label for="aleatoire">Mode aléatoire</label>
+            <input type="radio" name="mode" id="lineaire" value="lineaire" checked>
+            <label for="lineaire">Mode lineaire</label>
+        </fieldset>
+        <button type="submit">Envoyer</button>
+    </form>
 
     <script src="game.js"></script>
     <script src="display.js"></script>
