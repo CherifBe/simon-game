@@ -33,10 +33,10 @@ class Display{
             }
             j++;
 
-            let divTile = document.createElement('div');
+            const divTile = document.createElement('div');
             divTile.classList.add('tile');
 
-            let btnTile = document.createElement('button');
+            const btnTile = document.createElement('button');
             btnTile.id = tile;
             btnTile.classList.add('tileElement');
             btnTile.style["background-color"] = tile;
@@ -67,11 +67,14 @@ class Display{
     formTreatment(e){
         e.preventDefault();
 
-        let nbTiles = document.getElementById('chooseNbTiles');
-        let aleatoireMode = document.getElementById('aleatoire');
+        const nbTiles = document.getElementById('chooseNbTiles');
+        const aleatoireMode = document.getElementById('aleatoire');
         
-        if(nbTiles.value <= 12){
+        if(nbTiles.value > 0 || nbTiles.value <= 12){
             this.nbTiles = nbTiles.value;
+        }
+        else{
+            return;
         }
         if(aleatoireMode.checked){
             this.linear = false;
