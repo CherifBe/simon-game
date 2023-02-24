@@ -1,6 +1,7 @@
 class Game{
-    constructor(tiles){
+    constructor(tiles, nbTiles){
         this.tiles = tiles;
+        this.nbTiles = nbTiles;
         this.sequence = [];
         this.humanSequence = [];
         this.i = 0;
@@ -26,8 +27,11 @@ class Game{
         }
     }
 
-    nextTile(){
-        return this.tiles[Math.floor(Math.random() * 4)];
+    nextTile(k = false, j){
+        if(!k){
+            return this.tiles[Math.floor(Math.random() * this.nbTiles)];
+        }
+        return this.tiles[j];
     }
 
     nextLevel(){ // On n'utilise plus cette fonction dans la version aléatoire
@@ -43,11 +47,16 @@ class Game{
         this.level = 0;
     }
 
-    generateNewSequence(){
-        this.i++;
+    generateNewSequence(i = 0){
+        let k = true;
+        if(i === 0){
+            k = false;
+            this.i++;
+            i = this.i;
+        }
         this.newSequence = [];
-        for(let j = 0; j < this.i; j++){
-            this.newSequence.push(this.nextTile());
+        for(let j = 0; j < i; j++){
+            this.newSequence.push(this.nextTile(k, j));
         }
         this.sequence = this.newSequence;
         return this.newSequence;

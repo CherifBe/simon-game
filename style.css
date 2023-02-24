@@ -6,13 +6,18 @@ body{
     width:100%;
     justify-content: center;
     display:flex;
+    flex-direction: column;
+}
+
+.grouptiles{
+    display:flex;
 }
 
 .tile{
     margin:20px;
 }
 
-#red,#blue,#green,#yellow{
+.tileElement{
     width: 300px;
     height: 300px;
     border-radius: 10px;

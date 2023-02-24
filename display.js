@@ -1,18 +1,62 @@
 class Display{
 
     constructor(){
-        this.tiles = ['red', 'blue', 'green', 'yellow'];
+        this.tiles = ['red', 'blue', 'green', 'yellow', 'aqua', 'fuchsia', 'gray', 'lime', 'navy', 'olive', 'purple', 'silver'];
         this.level = 0;
-        this.game = new Game(this.tiles);
+        this.nbTiles = 10;
+        this.game = new Game(this.tiles, this.nbTiles);
         this.initDisplay();
     }
 
-    initDisplay(){
+    initDisplay(){ // Lancer fonction lorsque l'on soumet le formulaire
         this.container = document.querySelector('.container');
         this.startButton = document.getElementById('startBtn');
         this.displayInfo = document.getElementById('info');
 
-        this.tiles.forEach(tile => {
+
+        const tilesToDisplay = this.game.generateNewSequence(this.nbTiles); // TODO: penser modulo (prendre moitié du tableau)
+        let j = 0;
+        let k = 0;
+        let groupTiles = [];// TODO: optimiser ça
+        groupTiles.push(document.createElement('div'));
+        groupTiles[k].classList.add('grouptiles');
+        tilesToDisplay.forEach(tile => {
+            
+            if( j % 4 === 0 ){
+                k++;
+                groupTiles.push(document.createElement('div'));
+                groupTiles[k].classList.add('grouptiles'); 
+            }
+            j++;
+
+            let divTile = document.createElement('div');
+            divTile.classList.add('tile');
+
+            let btnTile = document.createElement('button');
+            btnTile.id = tile;
+            btnTile.classList.add('tileElement');
+            btnTile.style["background-color"] = tile;
+            btnTile.addEventListener('click', () => {
+                let res = this.game.handleClick(tile);
+                if(res === 'res'){
+                    setTimeout(() => {
+                        // this.play(this.game.nextLevel());
+                        this.play();
+                    }, 1000);
+                }
+                if(res === true){ // Si renvoie 'true' la partie en cours est terminé
+                    this.reset();
+                }
+            });
+
+            divTile.appendChild(btnTile);
+            groupTiles[k].appendChild(divTile);
+            this.container.appendChild(groupTiles[k]);
+        });
+
+
+
+   /*     this.tiles.forEach(tile => {
             document.getElementById(tile).addEventListener('click', () => {
                 let res = this.game.handleClick(tile);
                 if(res === 'res'){
@@ -26,7 +70,7 @@ class Display{
                 }
 
             });
-        })
+        }) */
         this.startButton.addEventListener('click', this.startGame.bind(this));
     }
 
