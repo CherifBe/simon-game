@@ -2,10 +2,10 @@ class Display{
 
     constructor(){
         this.tiles = ['red', 'blue', 'green', 'yellow', 'aqua', 'fuchsia', 'gray', 'lime', 'navy', 'olive', 'purple', 'silver'];
-        this.userPreference();
+        this.userPreference(); // On vient initialiser la fonction userPreference qui écoutera lorsque l'utilisateur soumettra le formulaire
         this.level = 0;
         this.nbTiles = 0;
-        this.linear = true;
+        this.linear = true; // Par défaut on initialise le mode de jeu à linéaire
     }
 
     initDisplay(){ // Cette fonction est lancée une fois que le formulaire est envoyé
@@ -24,7 +24,7 @@ class Display{
         let groupTiles = [];
         groupTiles.push(document.createElement('div'));
         groupTiles[k].classList.add('grouptiles');
-        tilesToDisplay.forEach(tile => {
+        tilesToDisplay.forEach(tile => { // Ici on écrit l'HTML en fonction du nombre de tuile que l'utilisateur a spécifié
             
             if( j % ((this.nbTiles > 8) ? 4 : (this.nbTiles / 2) ) === 0 ){ // Si le joueur a selectionné un mode avec plus de 8 tuiles, on fait des lignes de 4.
                 k++;
@@ -40,11 +40,11 @@ class Display{
             btnTile.id = tile;
             btnTile.classList.add('tileElement');
             btnTile.style["background-color"] = tile;
-            btnTile.addEventListener('click', () => {
-                let res = this.game.handleClick(tile);
+            btnTile.addEventListener('click', () => { // Pour chaque tuile créé on vient y ajouter un listener au click
+                let res = this.game.handleClick(tile); // Lorsqu'un l'utilisateur clique on lance la fonction handleClick
                 if(res === 'res'){
                     setTimeout(() => {
-                        (this.linear) ? this.play(this.game.nextLevel()) : this.play();
+                        (this.linear) ? this.play(this.game.nextLevel()) : this.play(); // Si le mode de jeu est linéaire on vient "poursuivre" le tableau déjà existant, sinon on en créé un tout nouveau pour le mode aléatoire
                     }, 1000);
                 }
                 if(res === true){ // Si renvoie 'true' la partie en cours est terminé
@@ -60,7 +60,7 @@ class Display{
         this.startButton.addEventListener('click', this.startGame.bind(this));
     }
 
-    userPreference(){
+    userPreference(){ // On écoute lorsque le formulaire est soumis
         document.getElementById('userPreference').addEventListener('submit', (e) => this.formTreatment(e));
     }
 
@@ -97,7 +97,7 @@ class Display{
     }
 
     play(sequence = null){
-        if(!this.container.classList.contains('no-display')){
+        if(!this.container.classList.contains('no-display')){ // On vient vérifier que les tuiles ne sont pas jouable pour l'utilisateur pendant que la machine joue
             this.container.classList.add('no-display');
         }
         if(sequence == null || !(this.linear)){
@@ -110,7 +110,7 @@ class Display{
         });
     }
 
-    activateTile(color){
+    activateTile(color){ // Cette fonction vient ajouter la classe css 'activated' qui vient activer les différentes tuiles de notre tableau
         console.log(color);
         const tileElement = document.getElementById(color);
         tileElement.classList.add('activated');
@@ -120,12 +120,12 @@ class Display{
         this.timeToPlay();
     }
 
-    timeToPlay(){
+    timeToPlay(){ // Lorsque c'est au tour de l'utilisateur de jouer on vient retirer la classe 'no-display' pour qu'il puisse jouer
         this.container.classList.remove('no-display');
         this.displayInfo.textContent = `Votre tour: ${this.level}`;
     }
 
-    reset(){
+    reset(){ // Une fois le jeu est terminé on revient remettre les paramètres par défaut
         this.displayInfo.classList.add('hidden');
         this.startButton.classList.remove('hidden');
         this.container.classList.add('no-display');
